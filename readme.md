@@ -1,29 +1,33 @@
-This directory contains
-- local_lib:      The installation of the C++ library ur_rtde
-- sample_project: A sample project to use this library
+# Sample Project to Control UR5 Robot in C++
+A sample project to control a UR5 robot using the C++ library ur_rtde
+- https://sdurobotics.gitlab.io/ur_rtde/
 
-### Note
-If you downloaded this from GitHub, you get to install `local_lib` yourself
+Features
+- Installation instructions to entirely contain ur_rtde into a local directory (not a system install)
+- Utility scripts to build and run the project
+- Utility command to mode the robot to a preset 'home' position
+- Sample Servoj / Speedj files with inbuilt soft-stop on CTRL+C
 
-Follow the instructions `Install Instructions.sh`
 
+# Install:
+## Install ur_rtde
+`local_lib` will hold the installation of the [C++ library ur_rtde](https://sdurobotics.gitlab.io/ur_rtde/). The installation is contained into a local directory, so that it does not interfere with any other projects on the computer.
 
-# local_lib
-Installation of the C++ library ur_rtde
-https://sdurobotics.gitlab.io/ur_rtde/
+The install instructions are in: [Install_Instructions.sh](./Install_Instructions.sh)
 
-The installation is contained into a local directory, so that it does not mess with the rest of the projects on the computer
-As such, to use this installation, you must adjust
+To use the local ur_rtde installation, you must adjust
 - The LD_LIBRARY_PATH bash environment variable
 - The paths used by CMake
 
+Assuming that the `local_lib` is at the path `/home/acrv/ur_rtde/local_lib/`, this would look like: 
+
+In `./bashrc`
 ```bash
-# Specify path to bash
-# Copy these lines into your .bashrc file so that the path is included in every terminal you open
 rtdeLibDir='/home/acrv/ur_rtde/local_lib/lib'
 export LD_LIBRARY_PATH=$rtdeLibDir:$LD_LIBRARY_PATH
 ```
 
+In your project's cmake files
 ```cmake
 # Specify path to cmake
 set(URRTDE_PKG_DIR "/home/acrv/ur_rtde/local_lib/lib/cmake/ur_rtde" CACHE PATH "dir ur_rtde pkg")
@@ -37,28 +41,33 @@ add_executable("MoveServoj" "MoveServoj.cpp")
 target_link_libraries("MoveServoj" PUBLIC ${URRTDE_Lib})
 ```
 
+The sample project implements this for you, as described in the next section.
 
-# sample_project
-The sample project implements the above requirements to use the local install.
 
-INTENDED USE
-Copy the whole `sample_project` folder somewhere else
-- Edit `./sample_project/src/CMakeLists.txt`
-    - Set `BJ_PROJECT_DIR` to the new path
-- Edit `sample_project/scripts/bashrc_append.sh`
-    - Set the following variables to match the new path
-    - `bjScriptsDir`
-    - `bjCMakeDir`
-    - Do not change `bjLibDir`. Leave it pointing to the installation in this folder
-- Edit `/home/acrv/.bashrc` as per the instructions in `sample_project/scripts/bashrc_append.sh`
-- Test compiling and running a sample program
+## Install the sample project
+After installing ur_rtde, as described in the previous section:
+
+1. Edit `./sample_project/src/CMakeLists.txt`
+    - Set `BJ_PROJECT_DIR` as the path to this repository
+2. Edit `sample_project/scripts/bashrc_append.sh`
+    - Set `BJ_PROJECT_DIR` likewise
+3. Edit your `~/.bashrc` file as per the instructions in `./sample_project/scripts/bashrc_append.sh`
+
+
+## sample_project
+Test compiling and running a sample program
 
 ```bash
 # Compile
 bjbuild
 
 # Run
-./MoveServoj
+bjready
+bjrun
+
+# Move robot to home configuration
+bjready h
+
 ```
 
 

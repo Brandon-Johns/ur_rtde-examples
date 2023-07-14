@@ -37,11 +37,11 @@ set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 # Host machine dependent
 ##########################################
 # Path to library and project
-set(BJ_PROJECT_DIR "/home/acrv/ur_rtde/sample_project")
+set(BJ_PROJECT_DIR "/home/acrv/brandon_ws/ur_rtde-Examples/sample_project")
 
 # Paths to: Libraries, Includes (library header files), Packages
 #	Root directory of locally installed libraries
-set(BJ_LIB_DIR "/home/acrv/ur_rtde/local_lib")
+set(BJ_LIB_DIR "/home/acrv/brandon_ws/ur_rtde-Examples/local_lib")
 #	ur_rtde
 set(URRTDE_PKG_DIR "${BJ_LIB_DIR}/lib/cmake/ur_rtde" CACHE PATH "dir ur_rtde pkg")
 #	OpenBLAS
@@ -56,7 +56,7 @@ set(CMAKE_RUNTIME_OUTPUT_DIRECTORY "${BJ_PROJECT_DIR}/bin")
 #	If you want to run this project on multiple computers,
 #	then rewrite this section to test the computer you're on and set the correct variables
 cmake_host_system_information(RESULT HOSTNAME_THIS_PC QUERY HOSTNAME)
-if(NOT ("${HOSTNAME_THIS_PC}" STREQUAL "acrv-All-Series"))
+if(NOT ("${HOSTNAME_THIS_PC}" STREQUAL "acrv-ubuntu-18"))
 	message("ERROR: Running on a different computer than this project was setup for.")
 	message("NOTE: Hostname for this comuter: ${HOSTNAME_THIS_PC}")
 	message(FATAL_ERROR "Change the settings in the root CMakeLists.txt file!")

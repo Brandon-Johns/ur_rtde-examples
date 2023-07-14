@@ -1,8 +1,8 @@
-exit 1 # In case someone calls this as a script
+exit 1 # This file is not a script (This line safeguards in case it is ever called as a script)
 
 # Written by:		Brandon Johns
 # Version created:	2022-11-21
-# Last edited:		2022-11-21
+# Last edited:		2023-07-14
 
 # Purpose:
 #   Install C++ library ur_rtde: https://sdurobotics.gitlab.io/ur_rtde/
@@ -38,21 +38,29 @@ sudo apt-get install python-dev autotools-dev libicu-dev libbz2-dev libopenblas-
 
 
 ##################################################################
+# Setup this repository
+#################################
+# Clone this repository with git
+
+# Set bash variable the root of this repository
+ProjectDir=${HOME}'/brandon_ws/ur_rtde-Examples'
+
+
+##################################################################
 # Setup directory to install into
 #################################
 ### Install dir
-### Change this directory to the directory you wish to install ur_rtde into
-bjLibDir='/home/acrv/ur_rtde/local_lib'
+myLibDir=${ProjectDir}'/local_lib'
 
 # These are required in the installation process
-mkdir ${bjLibDir}/src
+mkdir -p ${myLibDir}/src
 
 
 ##################################################################
 # Install Boost
 #	https://stackoverflow.com/a/41272796
 #################################
-cd ${bjLibDir}/src
+cd ${myLibDir}/src
 
 ### Download
 wget "https://sourceforge.net/projects/boost/files/boost/1.80.0/boost_1_80_0.tar.gz"
@@ -61,7 +69,7 @@ tar xzvf boost_1_80_0.tar.gz
 
 ### Pre-install
 cd boost_1_80_0/
-./bootstrap.sh --prefix=$bjLibDir --includedir=include --libdir=lib
+./bootstrap.sh --prefix=$myLibDir --includedir=include --libdir=lib
 
 n=`cat /proc/cpuinfo | grep "cpu cores" | uniq | awk '{print $NF}'`
 echo "Num CPU Cores: $n"
@@ -71,35 +79,35 @@ echo "Num CPU Cores: $n"
 #	    ./b2 --help
 #   Check libraries being build with the flag --show-libraries
 #   Then remove the --show-libraries flag and run again to perform the install
-sudo ./b2 install -j$n -a --with=all --layout=tagged threading=multi --prefix=$bjLibDir --show-libraries
+sudo ./b2 install -j$n -a --with=all --layout=tagged threading=multi --prefix=$myLibDir --show-libraries
 
 ##################################################################
 # Install ur_rtde
 #################################
-cd ${bjLibDir}/src
+cd ${myLibDir}/src
 
 ### Download
 git clone https://gitlab.com/sdurobotics/ur_rtde.git
 cd ur_rtde
 git checkout tags/v1.5.4
-### NOTE: Skipping python bindings => no need to run
-#   git submodule update --init --recursive
+
+git submodule update --init --recursive
 
 ### Build
 #   DESTDIR doesn't seem to do anything but oh well
 mkdir build
 cd build
-cmake -DPYTHON_BINDINGS:BOOL=OFF -DCMAKE_INSTALL_PREFIX=$bjLibDir -DCMAKE_PREFIX_PATH=$bjLibDir DESTDIR=$bjLibDir ..
+cmake -DPYTHON_BINDINGS:BOOL=OFF -DCMAKE_INSTALL_PREFIX=$myLibDir -DCMAKE_PREFIX_PATH=$myLibDir DESTDIR=$myLibDir ..
 make
 
 ### Install
 sudo make install
 ### ACTION: (To fix paths so it works from my custom install dir)
-#   Edit: ${bjLibDir}/lib/cmake/ur_rtde/ur_rtdeBuildConfig.cmake
+#   Edit: ${myLibDir}/lib/cmake/ur_rtde/ur_rtdeBuildConfig.cmake
 #       Change line 3
 #           FROM:   set(RTDE_BOOST_LIBRARY_DIR )
 #           TP:     set(RTDE_BOOST_LIBRARY_DIR /home/acrv/ur_rtde/local_lib/lib )
-#   Edit: ${bjLibDir}/lib/cmake/ur_rtde/ur_rtdeConfig.cmake
+#   Edit: ${myLibDir}/lib/cmake/ur_rtde/ur_rtdeConfig.cmake
 #       Add lines just before last endif() in the file
 #           # BJ:START Added
 #           else()
@@ -111,7 +119,7 @@ sudo make install
 ##################################################################
 # Finishing up
 #################################
-cd ${bjLibDir}
+cd ${myLibDir}
 
 # Give everything full permissions & set user to self
 #   Check current permissions & owner/group with: ls -ld
@@ -139,13 +147,13 @@ sudo make install
 # Boost
 #################################
 ### Uninstall
-sudo rm -rf ${bjLibDir}/include/boost # Dir
-sudo rm -rf ${bjLibDir}/lib/libboost_* # Total 95 files starting with "libboost_"
-sudo rm -rf ${bjLibDir}/lib/cmake/Boost* # Many dirs
-sudo rm -rf ${bjLibDir}/lib/cmake/boost_* # Many dirs
+sudo rm -rf ${myLibDir}/include/boost # Dir
+sudo rm -rf ${myLibDir}/lib/libboost_* # Total 95 files starting with "libboost_"
+sudo rm -rf ${myLibDir}/lib/cmake/Boost* # Many dirs
+sudo rm -rf ${myLibDir}/lib/cmake/boost_* # Many dirs
 
 ### Reset before recompiling with b2
-cd ${bjLibDir}/src/boost_1_80_0/
+cd ${myLibDir}/src/boost_1_80_0/
 sudo ./b2 --clean
 ### ACTION:
 #	Also follow uninstall instructions
@@ -160,13 +168,13 @@ sudo ./b2 --clean
 # ur_rtde
 #################################
 ### Uninstall
-rm -rf ${bjLibDir}/include/urcl # Dir
-rm -rf ${bjLibDir}/include/ur_rtde # Dir
-rm -rf ${bjLibDir}/lib/librtde.so* # Total 3 files
-rm -rf ${bjLibDir}/lib/cmake/ur_rtde # Dir
+rm -rf ${myLibDir}/include/urcl # Dir
+rm -rf ${myLibDir}/include/ur_rtde # Dir
+rm -rf ${myLibDir}/lib/librtde.so* # Total 3 files
+rm -rf ${myLibDir}/lib/cmake/ur_rtde # Dir
 
 ### Reset before recompiling
-cd ${bjLibDir}/src/ur_rtde
+cd ${myLibDir}/src/ur_rtde
 rm -rf build
 mkdir build
 cd build
