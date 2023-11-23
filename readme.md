@@ -10,27 +10,31 @@ Features
 
 
 # Install:
+These instructions assume that you have cloned this git repository to the path `/home/acrv/ur_rtde-Examples`. Where ever you see this string in the instructions, you will need to change it to your actual install path.
+
 ## Install ur_rtde
 `local_lib` will hold the installation of the [C++ library ur_rtde](https://sdurobotics.gitlab.io/ur_rtde/). The installation is contained into a local directory, so that it does not interfere with any other projects on the computer.
 
 The install instructions are in: [Install_Instructions.sh](./Install_Instructions.sh)
 
+
+## Using ur_rtde
 To use the local ur_rtde installation, you must adjust
 - The LD_LIBRARY_PATH bash environment variable
 - The paths used by CMake
 
-Assuming that the `local_lib` is at the path `/home/acrv/ur_rtde/local_lib/`, this would look like: 
+Assuming that the `local_lib` is at the path `/home/acrv/ur_rtde-Examples/local_lib/`, this would look like: 
 
 In `./bashrc`
 ```bash
-rtdeLibDir='/home/acrv/ur_rtde/local_lib/lib'
+rtdeLibDir='/home/acrv/ur_rtde-Examples/local_lib/lib'
 export LD_LIBRARY_PATH=$rtdeLibDir:$LD_LIBRARY_PATH
 ```
 
 In your project's cmake files
 ```cmake
 # Specify path to cmake
-set(URRTDE_PKG_DIR "/home/acrv/ur_rtde/local_lib/lib/cmake/ur_rtde" CACHE PATH "dir ur_rtde pkg")
+set(URRTDE_PKG_DIR "/home/acrv/ur_rtde-Examples/local_lib/lib/cmake/ur_rtde" CACHE PATH "dir ur_rtde pkg")
 find_package("ur_rtde" REQUIRED PATHS ${URRTDE_PKG_DIR} NO_DEFAULT_PATH)
 set(URRTDE_Lib "ur_rtde::rtde")
 
@@ -49,6 +53,7 @@ After installing ur_rtde, as described in the previous section:
 
 1. Edit `./sample_project/src/CMakeLists.txt`
     - Set `BJ_PROJECT_DIR` as the path to this repository
+    - Set `BJ_LIB_DIR` as the path to `./local_lib`
 2. Edit `sample_project/scripts/bashrc_append.sh`
     - Set `BJ_PROJECT_DIR` likewise
 3. Edit your `~/.bashrc` file as per the instructions in `./sample_project/scripts/bashrc_append.sh`

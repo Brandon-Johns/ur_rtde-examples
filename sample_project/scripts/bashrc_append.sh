@@ -1,14 +1,14 @@
 #!/usr/bin/bash
 # Written by:		Brandon Johns
 # Version created:	2022-11-21
-# Last edited:		2022-11-21
+# Last edited:		2023-11-23
 
 # Purpose: Brandon's custom shell commands. Effectively works as if in ~/.bashrc
 
 # To activate, add the folowing to ~/.bashrc
 #	# Source my settings form another file
-#	chmod +x /home/acrv/brandon_ws/ur_rtde-Examples/sample_project/scripts/*
-#	source /home/acrv/brandon_ws/ur_rtde-Examples/sample_project/scripts/bashrc_append.sh
+#	chmod +x /home/acrv/ur_rtde-Examples/sample_project/scripts/*
+#	source /home/acrv/ur_rtde-Examples/sample_project/scripts/bashrc_append.sh
 
 ### NOTES ###
 # aliases are garbage (something about them not recursively expanding). Use functions
@@ -22,7 +22,7 @@
 ## Script Config
 ################################
 ## Path to project root
-BJ_PROJECT_DIR="/home/acrv/brandon_ws/ur_rtde-Examples"
+BJ_PROJECT_DIR="/home/acrv/ur_rtde-Examples"
 
 
 ################################################################

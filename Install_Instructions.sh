@@ -2,7 +2,7 @@ exit 1 # This file is not a script (This line safeguards in case it is ever call
 
 # Written by:		Brandon Johns
 # Version created:	2022-11-21
-# Last edited:		2023-07-14
+# Last edited:		2023-11-23
 
 # Purpose:
 #   Install C++ library ur_rtde: https://sdurobotics.gitlab.io/ur_rtde/
@@ -43,7 +43,8 @@ sudo apt-get install python-dev autotools-dev libicu-dev libbz2-dev libopenblas-
 # Clone this repository with git
 
 # Set bash variable the root of this repository
-ProjectDir=${HOME}'/brandon_ws/ur_rtde-Examples'
+# Change as required, such that this variable is the correct path
+ProjectDir=${HOME}'/ur_rtde-Examples'
 
 
 ##################################################################
@@ -103,15 +104,18 @@ make
 ### Install
 sudo make install
 ### ACTION: (To fix paths so it works from my custom install dir)
+#   NOTE:
+#       In performing the following edits, you will need to change `/home/acrv/ur_rtde-Examples/local_lib`
+#       to the where you have installed $myLibDir
 #   Edit: ${myLibDir}/lib/cmake/ur_rtde/ur_rtdeBuildConfig.cmake
 #       Change line 3
 #           FROM:   set(RTDE_BOOST_LIBRARY_DIR )
-#           TP:     set(RTDE_BOOST_LIBRARY_DIR /home/acrv/ur_rtde/local_lib/lib )
+#           TO:     set(RTDE_BOOST_LIBRARY_DIR /home/acrv/ur_rtde-Examples/local_lib/lib )
 #   Edit: ${myLibDir}/lib/cmake/ur_rtde/ur_rtdeConfig.cmake
 #       Add lines just before last endif() in the file
 #           # BJ:START Added
 #           else()
-#             find_package(Boost REQUIRED COMPONENTS system thread PATHS "/home/acrv/ur_rtde/local_lib/lib/cmake/Boost-1.80.0")
+#             find_package(Boost REQUIRED COMPONENTS system thread PATHS "/home/acrv/ur_rtde-Examples/local_lib/lib/cmake/Boost-1.80.0")
 #           # BJ:END Added
 #           endif() # BJ: This is the last line in the file
 
