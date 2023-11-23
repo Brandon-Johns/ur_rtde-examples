@@ -5,7 +5,7 @@ A sample project to control a UR5 robot using the C++ library ur_rtde
 Features
 - Installation instructions to entirely contain ur_rtde into a local directory (not a system install)
 - Utility scripts to build and run the project
-- Utility command to mode the robot to a preset 'home' position
+- Utility command to move the robot to a preset 'home' position
 - Sample Servoj / Speedj files with inbuilt soft-stop on CTRL+C
 
 
