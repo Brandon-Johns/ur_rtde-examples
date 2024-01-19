@@ -37,11 +37,11 @@ set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 # Host machine dependent
 ##########################################
 # Path to library and project
-set(BJ_PROJECT_DIR "/home/acrv/ur_rtde-Examples/sample_project")
+set(BJ_PROJECT_DIR "/home/acrv/ur_rtde-examples/sample_project")
 
 # Paths to: Libraries, Includes (library header files), Packages
 #	Root directory of locally installed libraries
-set(BJ_LIB_DIR "/home/acrv/ur_rtde-Examples/local_lib")
+set(BJ_LIB_DIR "/home/acrv/ur_rtde-examples/local_lib")
 #	ur_rtde
 set(URRTDE_PKG_DIR "${BJ_LIB_DIR}/lib/cmake/ur_rtde" CACHE PATH "dir ur_rtde pkg")
 #	OpenBLAS
